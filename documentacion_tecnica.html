@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Documentación Técnica – Sistema Salón de Belleza</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #3a1b75;
+    --pink: #d82e88;
+    --mid: #811e86;
+    --light: #f8f4ff;
+    --gray: #f0eff5;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Inter', sans-serif; background:#fff; color:var(--text); font-size:11pt; line-height:1.7; }
+
+  .cover {
+    background: linear-gradient(135deg, #3a1b75 0%, #811e86 50%, #d82e88 100%);
+    min-height: 100vh;
+    display: flex; flex-direction:column; justify-content:center; align-items:center;
+    text-align:center; padding:60px 40px;
+    page-break-after: always;
+  }
+  .cover .crown { font-size:64px; margin-bottom:20px; }
+  .cover h1 { font-family:'Playfair Display', serif; font-size:42pt; color:#fff; line-height:1.2; margin-bottom:10px; text-shadow:0 2px 20px rgba(0,0,0,0.3); }
+  .cover h2 { font-size:16pt; color:rgba(255,255,255,0.85); font-weight:300; margin-bottom:40px; }
+  .cover .badge { background:rgba(255,255,255,0.15); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.3); border-radius:50px; padding:10px 30px; color:#fff; font-size:10pt; display:inline-block; margin-bottom:20px; }
+  .cover .meta { color:rgba(255,255,255,0.7); font-size:9pt; margin-top:40px; }
+  .cover .line { width:80px; height:3px; background:rgba(255,255,255,0.5); margin:30px auto; border-radius:2px; }
+
+  .toc { padding: 60px 70px; page-break-after:always; }
+  .toc h2 { font-family:'Playfair Display',serif; font-size:24pt; color:var(--purple); margin-bottom:30px; }
+  .toc ul { list-style:none; }
+  .toc ul li { display:flex; justify-content:space-between; border-bottom:1px dotted #ddd; padding:10px 0; font-size:11pt; }
+
+  .section { padding: 60px 70px; page-break-before:always; }
+  .section-header { display:flex; align-items:center; margin-bottom:40px; }
+  .section-number { width:52px; height:52px; border-radius:12px; background:linear-gradient(135deg,var(--purple),var(--mid)); color:#fff; font-size:18pt; font-weight:900; display:flex; align-items:center; justify-content:center; margin-right:20px; flex-shrink:0; }
+  .section-title h2 { font-family:'Playfair Display',serif; font-size:20pt; color:var(--purple); line-height:1.2; }
+  .section-title p { color:var(--muted); font-size:10pt; margin-top:4px; }
+
+  .tech-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin:30px 0; }
+  .tech-card { background:var(--light); border-radius:16px; padding:24px; border-left:4px solid var(--pink); }
+  .tech-card .layer { font-size:8pt; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:8px; }
+  .tech-card h3 { font-size:12pt; font-weight:700; color:var(--purple); margin-bottom:8px; }
+  .tech-card .tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .tech-card .tag { background:#fff; border:1px solid rgba(164,44,161,0.2); border-radius:20px; padding:3px 10px; font-size:8pt; color:var(--mid); font-weight:600; }
+
+  .features-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin:20px 0; }
+  .feature-item { display:flex; align-items:flex-start; background:var(--light); border-radius:12px; padding:16px; }
+  .feature-icon { width:36px; height:36px; border-radius:8px; background:linear-gradient(135deg,var(--purple),var(--pink)); display:flex; align-items:center; justify-content:center; margin-right:14px; flex-shrink:0; font-size:16px; }
+  .feature-content h4 { font-size:10pt; font-weight:700; color:var(--purple); margin-bottom:4px; }
+  .feature-content p { font-size:9pt; color:var(--muted); line-height:1.5; }
+
+  .steps { list-style:none; margin:20px 0; }
+  .step { display:flex; margin-bottom:24px; gap:20px; }
+  .step-num { width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,var(--purple),var(--mid)); color:#fff; font-weight:700; font-size:11pt; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+  .step-body { flex:1; }
+  .step-body h4 { font-size:11pt; font-weight:700; color:var(--purple); margin-bottom:6px; }
+  .step-body p { font-size:10pt; color:var(--text); line-height:1.6; }
+  .step-body code { background:#f0eff5; border:1px solid #ddd; border-radius:6px; padding:2px 8px; font-family:monospace; font-size:9pt; color:var(--mid); }
+  .step-body .cmd { background:#1a1a2e; border-radius:10px; padding:12px 16px; margin-top:10px; }
+  .step-body .cmd code { background:transparent; border:none; color:#a8ff78; font-size:9.5pt; display:block; line-height:1.8; }
+
+  table { width:100%; border-collapse:collapse; margin:20px 0; }
+  thead { background:linear-gradient(135deg,var(--purple),var(--mid)); color:#fff; }
+  thead th { padding:14px 16px; text-align:left; font-size:10pt; font-weight:600; }
+  tbody tr:nth-child(even) { background:var(--light); }
+  tbody tr:nth-child(odd) { background:#fff; }
+  tbody td { padding:12px 16px; font-size:10pt; border-bottom:1px solid #eee; vertical-align:top; }
+  .badge-yes { background:#d1fae5; color:#065f46; padding:2px 10px; border-radius:20px; font-size:8pt; font-weight:700; }
+  .badge-no { background:#fee2e2; color:#991b1b; padding:2px 10px; border-radius:20px; font-size:8pt; font-weight:700; }
+  .badge-part { background:#fef3c7; color:#92400e; padding:2px 10px; border-radius:20px; font-size:8pt; font-weight:700; }
+  .winner-row td { border-left:4px solid var(--pink); }
+
+  .callout { border-radius:14px; padding:20px 24px; margin:24px 0; display:flex; gap:16px; align-items:flex-start; }
+  .callout.info { background:#eef2ff; border-left:4px solid #6366f1; }
+  .callout.warning { background:#fffbeb; border-left:4px solid #f59e0b; }
+  .callout.success { background:#ecfdf5; border-left:4px solid #10b981; }
+  .callout.danger { background:#fef2f2; border-left:4px solid #ef4444; }
+  .callout-icon { font-size:22px; flex-shrink:0; margin-top:2px; }
+  .callout-body h4 { font-size:10pt; font-weight:700; margin-bottom:4px; }
+  .callout-body p { font-size:9.5pt; }
+
+  .img-container { text-align:center; margin:30px 0; }
+  .img-container img { max-width:100%; border-radius:16px; box-shadow:0 8px 40px rgba(58,27,117,0.15); }
+  .img-container figcaption { font-size:9pt; color:var(--muted); margin-top:10px; font-style:italic; }
+
+  .footer { text-align:center; padding:20px; color:var(--muted); font-size:8.5pt; border-top:1px solid #eee; margin-top:40px; }
+  .divider { height:3px; background:linear-gradient(90deg,var(--purple),var(--pink)); border-radius:2px; margin:30px 0; }
+
+  @media print {
+    body { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .cover { min-height:297mm; }
+    h3 { margin:28px 0 16px; font-size:13pt; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="crown">👑</div>
+  <h1>Sistema de Gestión<br/>Salón de Belleza</h1>
+  <h2>Documentación Técnica Completa</h2>
+  <div class="line"></div>
+  <div class="badge">📋 Manual de Tecnología, Instalación y Despliegue</div>
+  <div class="badge">🗓️ Versión 1.0 — Marzo 2026</div>
+  <div class="meta">Elaborado para: Administrador del Sistema<br/>Clasificación: Uso Interno</div>
+</div>
+
+<div class="toc">
+  <h2>📑 Tabla de Contenidos</h2>
+  <ul>
+    <li><span>1. Stack Tecnológico del Sistema</span><span>Pág. 3</span></li>
+    <li><span>2. Funcionalidades del Sistema</span><span>Pág. 4</span></li>
+    <li><span>3. Guía de Instalación Local (Paso a Paso)</span><span>Pág. 5</span></li>
+    <li><span>4. Opciones de Hosting Web Recomendadas</span><span>Pág. 7</span></li>
+    <li><span>5. Despliegue en Railway + Vercel (Guía Completa)</span><span>Pág. 8</span></li>
+  </ul>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">1</div>
+    <div class="section-title">
+      <h2>Stack Tecnológico del Sistema</h2>
+      <p>Tecnologías, frameworks y librerías que conforman la aplicación</p>
+    </div>
+  </div>
+
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="layer">🖥️ Frontend (Interfaz Visual)</div>
+      <h3>React + Vite</h3>
+      <p>Interfaz de usuario reactiva construida con componentes modernos y renderizado ultrarrápido.</p>
+      <div class="tags">
+        <span class="tag">React 18</span><span class="tag">Vite 5</span><span class="tag">React Router v6</span><span class="tag">Tailwind CSS</span><span class="tag">Chart.js</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="layer">⚙️ Backend (Servidor de API)</div>
+      <h3>Node.js + Express</h3>
+      <p>API REST robusta con autenticación JWT, manejo de archivos con Multer y lógica de negocio centralizada.</p>
+      <div class="tags">
+        <span class="tag">Express 4</span><span class="tag">JWT Auth</span><span class="tag">Multer</span><span class="tag">Bcrypt</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="layer">🗄️ Base de Datos</div>
+      <h3>MySQL 8.x</h3>
+      <p>Motor relacional de alta confiabilidad con soporte para transacciones y claves foráneas.</p>
+      <div class="tags">
+        <span class="tag">MySQL 8.4</span><span class="tag">mysql2/promise</span><span class="tag">Connection Pool</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="layer">📊 Exportación de Datos</div>
+      <h3>jsPDF + XLSX</h3>
+      <p>Generación de informes PDF y Excel directamente en el navegador del cliente.</p>
+      <div class="tags">
+        <span class="tag">jsPDF</span><span class="tag">jspdf-autotable</span><span class="tag">XLSX</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="layer">🔐 Autenticación</div>
+      <h3>JWT + Roles</h3>
+      <p>Tokens firmados y control de acceso con tres niveles de permisos de usuario.</p>
+      <div class="tags">
+        <span class="tag">jsonwebtoken</span><span class="tag">bcryptjs</span><span class="tag">3 roles</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="layer">📨 Notificaciones</div>
+      <h3>WhatsApp API</h3>
+      <p>Envío automático de mensajes personalizados ante nuevas citas y cancelaciones.</p>
+      <div class="tags">
+        <span class="tag">WhatsApp API</span><span class="tag">Plantillas</span><span class="tag">SweetAlert2</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="img-container">
+    <figure>
+      <img src="file:///C:/Users/victo/.gemini/antigravity/brain/47d5cfcb-665a-4d39-9b45-a56e45e0f9bd/architecture_diagram_1774183798693.png" alt="Diagrama de Arquitectura"/>
+      <figcaption>Figura 1 — Arquitectura de tres capas: Frontend React ↔ API Express ↔ Base de Datos MySQL</figcaption>
+    </figure>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">2</div>
+    <div class="section-title">
+      <h2>Funcionalidades del Sistema</h2>
+      <p>Módulos operativos disponibles en el panel administrativo</p>
+    </div>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-item">
+      <div class="feature-icon">📊</div>
+      <div class="feature-content"><h4>Dashboard Ejecutivo</h4><p>KPIs en tiempo real con gráficas interactivas de ingresos, citas, clientes y rendimiento del negocio.</p></div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">👥</div>
+      <div class="feature-content"><h4>Directorio de Clientes</h4><p>CRUD completo con búsqueda en vivo, galería de fotos antes/después por cliente.</p></div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">📅</div>
+      <div class="feature-content"><h4>Agenda de Citas</h4><p>Reservas con estados múltiples, pagos parciales (abonos) y notificaciones de WhatsApp automáticas.</p></div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">💰</div>
+      <div class="feature-content"><h4>Registro de Ventas</h4><p>Historial financiero de servicios completados con métodos de pago y filtros avanzados.</p></div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">📦</div>
+      <div class="feature-content"><h4>Control de Inventario</h4><p>Gestión de productos del salón con alertas de stock bajo y control de precios.</p></div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">📉</div>
+      <div class="feature-content"><h4>Egresos y Gastos</h4><p>Registro categórico de salidas de dinero (nómina, insumos, servicios, mantenimiento).</p></div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">📈</div>
+      <div class="feature-content"><h4>Reportes Administrativos</h4><p>Análisis por fechas: ingresos totales, métodos de pago, desempeño por estilista y servicios populares.</p></div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">👤</div>
+      <div class="feature-content"><h4>Gestión de Personal</h4><p>Usuarios con roles: Administrador, Recepcionista y Estilista. Control de permisos granular.</p></div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🔧</div>
+      <div class="feature-content"><h4>Mantenimiento de Equipos</h4><p>Registro de mantenimientos preventivos/correctivos con fechas, presupuesto y evidencia fotográfica.</p></div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">📤</div>
+      <div class="feature-content"><h4>Exportación Universal</h4><p>Descarga de datos en PDF, Excel (.xlsx) o vista de impresión desde todos los módulos.</p></div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">💾</div>
+      <div class="feature-content"><h4>Respaldo y Restauración</h4><p>Copia de seguridad (.sql), restauración y purga de fábrica para transferencia de negocio.</p></div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">⚙️</div>
+      <div class="feature-content"><h4>Configuración Global</h4><p>Personalización de logo, símbolo de moneda, nombre del negocio y plantillas de WhatsApp.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">3</div>
+    <div class="section-title">
+      <h2>Guía de Instalación Local</h2>
+      <p>Paso a paso para instalar el sistema en una computadora nueva</p>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body">
+      <h4>Requisitos del Sistema</h4>
+      <p>Windows 10/11 (64-bit), macOS 12+ o Ubuntu 20.04+. Mínimo 4 GB RAM, 2 GB de espacio libre y conexión a internet.</p>
+    </div>
+  </div>
+
+  <h3 style="color:#3a1b75;margin:28px 0 16px;">📥 Programas a Instalar</h3>
+  <ul class="steps">
+    <li class="step">
+      <div class="step-num">A</div>
+      <div class="step-body">
+        <h4>Node.js v18 LTS o superior</h4>
+        <p>Descarga desde: <code>https://nodejs.org/es/download</code> → Selecciona la versión <strong>LTS</strong> → Instala con opciones por defecto. Verifica:</p>
+        <div class="cmd"><code>node --version<br/>npm --version</code></div>
+      </div>
+    </li>
+    <li class="step">
+      <div class="step-num">B</div>
+      <div class="step-body">
+        <h4>MySQL Community Server 8.x</h4>
+        <p>Descarga desde: <code>https://dev.mysql.com/downloads/mysql/</code> → Selecciona <strong>Developer Default</strong>. Anota la contraseña que pongas para el usuario <code>root</code>.</p>
+      </div>
+    </li>
+    <li class="step">
+      <div class="step-num">C</div>
+      <div class="step-body">
+        <h4>Git</h4>
+        <p>Descarga desde: <code>https://git-scm.com/downloads</code> → Instala con opciones predeterminadas.</p>
+      </div>
+    </li>
+  </ul>
+
+  <h3 style="color:#3a1b75;margin:28px 0 16px;">🚀 Configuración del Sistema</h3>
+  <ul class="steps">
+    <li class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Clonar el repositorio</h4>
+        <div class="cmd"><code>git clone https://github.com/tu-usuario/sistema-salondebelleza.git<br/>cd sistema-salondebelleza</code></div>
+      </div>
+    </li>
+    <li class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Instalar dependencias del Backend</h4>
+        <div class="cmd"><code>cd backend<br/>npm install</code></div>
+      </div>
+    </li>
+    <li class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>Crear el archivo de entorno Backend</h4>
+        <p>Crea el archivo <code>backend/.env</code> con:</p>
+        <div class="cmd"><code>PORT=5000<br/>DB_HOST=localhost<br/>DB_USER=root<br/>DB_PASSWORD=tu_contraseña_mysql<br/>DB_NAME=salon_belleza_db<br/>JWT_SECRET=clave_secreta_muy_larga_y_segura</code></div>
+      </div>
+    </li>
+    <li class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>Crear la base de datos automáticamente</h4>
+        <div class="cmd"><code>node setup_db.js</code></div>
+        <p style="margin-top:8px;">Crea todas las tablas y usuario admin: <code>admin@salon.com / admin123</code></p>
+      </div>
+    </li>
+    <li class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <h4>Instalar dependencias del Frontend y configurar</h4>
+        <div class="cmd"><code>cd ../frontend<br/>npm install</code></div>
+        <p style="margin-top:8px;">Crea el archivo <code>frontend/.env</code>:</p>
+        <div class="cmd"><code>VITE_API_URL=http://localhost:5000/api</code></div>
+      </div>
+    </li>
+    <li class="step">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <h4>Iniciar el sistema (dos terminales)</h4>
+        <p><strong>Terminal 1 — Backend:</strong></p>
+        <div class="cmd"><code>cd backend &amp;&amp; node server.js</code></div>
+        <p style="margin-top:10px;"><strong>Terminal 2 — Frontend:</strong></p>
+        <div class="cmd"><code>cd frontend &amp;&amp; npm run dev</code></div>
+        <p style="margin-top:8px;">Accede en: <code>http://localhost:5173</code></p>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">4</div>
+    <div class="section-title">
+      <h2>Opciones de Hosting Web</h2>
+      <p>Comparativa de plataformas para publicar el sistema en internet</p>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Plataforma</th><th>Node.js</th><th>MySQL</th><th>Gratis</th><th>Facilidad</th><th>Ideal para</th></tr>
+    </thead>
+    <tbody>
+      <tr class="winner-row">
+        <td><strong>⭐ Railway.app</strong></td>
+        <td><span class="badge-yes">✓ Sí</span></td>
+        <td><span class="badge-yes">✓ Sí</span></td>
+        <td><span class="badge-part">Trial $5</span></td>
+        <td>⭐⭐⭐⭐⭐</td>
+        <td><strong>Backend + BD — RECOMENDADO</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Vercel</strong></td>
+        <td><span class="badge-part">Solo API</span></td>
+        <td><span class="badge-no">✗ No</span></td>
+        <td><span class="badge-yes">✓ Sí</span></td>
+        <td>⭐⭐⭐⭐⭐</td>
+        <td>Frontend React</td>
+      </tr>
+      <tr>
+        <td>Render.com</td>
+        <td><span class="badge-yes">✓ Sí</span></td>
+        <td><span class="badge-yes">✓ Sí</span></td>
+        <td><span class="badge-part">Limitado</span></td>
+        <td>⭐⭐⭐⭐</td>
+        <td>Alternativa a Railway</td>
+      </tr>
+      <tr>
+        <td>DigitalOcean</td>
+        <td><span class="badge-yes">✓ Sí</span></td>
+        <td><span class="badge-yes">✓ Sí</span></td>
+        <td><span class="badge-no">✗ No</span></td>
+        <td>⭐⭐⭐</td>
+        <td>Producción empresarial</td>
+      </tr>
+      <tr>
+        <td>Hostinger VPS</td>
+        <td><span class="badge-yes">✓ Sí</span></td>
+        <td><span class="badge-yes">✓ Sí</span></td>
+        <td><span class="badge-no">✗ No</span></td>
+        <td>⭐⭐⭐</td>
+        <td>Hosting latinoamericano</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout warning">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <h4>Combinación Óptima: Railway + Vercel</h4>
+      <p>Railway para el Backend (Node.js + MySQL) y Vercel para el Frontend (React). HTTPS automático, despliege desde GitHub y costo aproximado de <strong>$5–10 USD/mes</strong>.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">5</div>
+    <div class="section-title">
+      <h2>Despliegue en Railway + Vercel</h2>
+      <p>Guía completa para publicar el sistema en internet</p>
+    </div>
+  </div>
+
+  <div class="img-container">
+    <figure>
+      <img src="file:///C:/Users/victo/.gemini/antigravity/brain/47d5cfcb-665a-4d39-9b45-a56e45e0f9bd/deployment_diagram_1774183914435.png" alt="Diagrama de Despliegue"/>
+      <figcaption>Figura 2 — Flujo: código local → GitHub → Railway (Backend+DB) + Vercel (Frontend)</figcaption>
+    </figure>
+  </div>
+
+  <h3 style="color:#3a1b75;margin:28px 0 16px;">☁️ Fase A: Subir Código a GitHub</h3>
+  <ul class="steps">
+    <li class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Crear repositorio en GitHub.com</h4>
+        <p>Ve a <code>https://github.com</code> → New Repository → Nombre: <code>salon-belleza</code> → Privado → Crear.</p>
+      </div>
+    </li>
+    <li class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Subir el proyecto</h4>
+        <div class="cmd"><code>git init<br/>git add .<br/>git commit -m "Sistema Salón de Belleza v1.0"<br/>git remote add origin https://github.com/tu-usuario/salon-belleza.git<br/>git push -u origin main</code></div>
+      </div>
+    </li>
+  </ul>
+
+  <h3 style="color:#3a1b75;margin:28px 0 16px;">🚂 Fase B: Backend en Railway</h3>
+  <ul class="steps">
+    <li class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>Crear cuenta y proyecto en Railway</h4>
+        <p>Ve a <code>https://railway.app</code> → Login with GitHub → New Project → <strong>Provision MySQL</strong>. Copia las credenciales de conexión generadas.</p>
+      </div>
+    </li>
+    <li class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>Añadir servicio Node.js</h4>
+        <p>En el proyecto: <strong>Add Service → GitHub Repo</strong> → Selecciona tu repo → Root Directory: <code>/backend</code></p>
+      </div>
+    </li>
+    <li class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <h4>Configurar Variables de Entorno en Railway</h4>
+        <div class="cmd"><code>PORT=5000<br/>DB_HOST=→ (valor de Railway MySQL)<br/>DB_USER=→ (valor de Railway MySQL)<br/>DB_PASSWORD=→ (valor de Railway MySQL)<br/>DB_NAME=→ (valor de Railway MySQL)<br/>JWT_SECRET=cadena_aleatoria_muy_segura_32chars</code></div>
+      </div>
+    </li>
+    <li class="step">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <h4>Inicializar DB y obtener URL pública</h4>
+        <p>Desde la consola de Railway: <code>node setup_db.js</code><br/>En Settings → Networking → Generate Domain → Copia la URL: <code>https://tu-app.railway.app</code></p>
+      </div>
+    </li>
+  </ul>
+
+  <h3 style="color:#3a1b75;margin:28px 0 16px;">▲ Fase C: Frontend en Vercel</h3>
+  <ul class="steps">
+    <li class="step">
+      <div class="step-num">7</div>
+      <div class="step-body">
+        <h4>Crear cuenta y proyecto en Vercel</h4>
+        <p>Ve a <code>https://vercel.com</code> → Sign Up with GitHub → Add New Project → Selecciona tu repo → Root Directory: <code>frontend</code> → Framework: <strong>Vite</strong></p>
+      </div>
+    </li>
+    <li class="step">
+      <div class="step-num">8</div>
+      <div class="step-body">
+        <h4>Añadir variable de entorno</h4>
+        <div class="cmd"><code>VITE_API_URL=https://tu-app.railway.app/api</code></div>
+      </div>
+    </li>
+    <li class="step">
+      <div class="step-num">9</div>
+      <div class="step-body">
+        <h4>¡Deploy!</h4>
+        <p>Clic en <strong>Deploy</strong>. En 2-3 minutos el sistema estará en internet en la URL: <code>https://salon-belleza.vercel.app</code><br/>Para dominio propio: Settings → Domains → Agrega tu dominio personalizado.</p>
+      </div>
+    </li>
+  </ul>
+
+  <div class="callout success">
+    <div class="callout-icon">🌐</div>
+    <div class="callout-body">
+      <h4>¡Sistema en Producción!</h4>
+      <p>El sistema estará accesible desde cualquier computadora o celular con HTTPS automático. Cada push a GitHub redesplegará automáticamente.</p>
+    </div>
+  </div>
+
+  <div class="callout danger">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body">
+      <h4>Seguridad Importante</h4>
+      <p>Nunca subas el archivo <code>.env</code> a GitHub público. Usa variables de entorno en Railway y Vercel. Cambia el JWT_SECRET a una cadena aleatoria de mínimo 32 caracteres exclusiva de tu instalación.</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <strong>Sistema de Gestión Salón de Belleza</strong> — Documentación Técnica v1.0 — Marzo 2026<br/>
+    Stack: React + Vite · Node.js + Express · MySQL 8 · Desplegable en Railway + Vercel
+  </div>
+</div>
+
+</body>
+</html>

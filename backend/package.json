@@ -1,0 +1,18 @@
+﻿{
+    "main":  "server.js",
+    "name":  "backend",
+    "version":  "1.0.0",
+    "dependencies":  {
+                         "cloudinary":  "^1.41.3",
+                         "dotenv":  "^17.3.1",
+                         "express":  "^5.2.1",
+                         "axios":  "^1.13.6",
+                         "cors":  "^2.8.6",
+                         "multer-storage-cloudinary":  "^4.0.0",
+                         "multer":  "^2.1.1",
+                         "mysql2":  "^3.19.0"
+                     },
+    "scripts":  {
+                    "start":  "node server.js"
+                }
+}

@@ -1,0 +1,11 @@
+# Claude Code internal
+.claude/
+
+# Node
+node_modules/
+
+# Uploads generados
+backend/uploads/
+
+# Logs
+*.log
